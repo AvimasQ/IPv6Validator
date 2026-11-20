@@ -31,32 +31,32 @@ python3 -m pip install -r requirements.txt
 Проверка адреса:
 
 ```bash
-python3 main.py 2001:db8::1
+python3 src/main.py 2001:db8::1
 # Адрес '2001:db8::1' корректен.
 
-python3 main.py 2001:DB8::1
+python3 src/main.py 2001:DB8::1
 # Адрес '2001:DB8::1' некорректен.
 ```
 
 Проверка адреса с зоной:
 
 ```bash
-python3 main.py --zoned fe80::1%eth0
-python3 main.py --zoned --zone-pattern '%eth\d+' fe80::1%eth0
+python3 src/main.py --zoned fe80::1%eth0
+python3 src/main.py --zoned --zone-pattern '%eth\d+' fe80::1%eth0
 ```
 
 Поиск адресов:
 
 ```bash
-python3 main.py --text "Сервер: 2001:db8::1, шлюз: ::1"
-python3 main.py --zoned --file examples/addresses.txt
-python3 main.py --url https://example.org
+python3 src/main.py --text "Сервер: 2001:db8::1, шлюз: ::1"
+python3 src/main.py --zoned --file examples/addresses.txt
+python3 src/main.py --url https://example.org
 ```
 
 Интерактивный режим:
 
 ```bash
-python3 main.py
+python3 src/main.py
 ```
 
 Коды завершения:
@@ -77,13 +77,13 @@ from ipvalidator import (
     is_valid_ipv6_zoned,
 )
 
-is_valid_ipv6("2001:db8::1")                 # True
-is_valid_ipv6("2001:DB8::1")                 # False
-is_valid_ipv6_zoned("fe80::1%eth0")          # True
+is_valid_ipv6("2001:db8::1")                     # True
+is_valid_ipv6("2001:DB8::1")                     # False
+is_valid_ipv6_zoned("fe80::1%eth0")              # True
 is_valid_ipv6_zoned("fe80::1%eth0", r"%eth\d+")  # True
 
-find_ipv6("Адрес: 2001:db8::1")              # ['2001:db8::1']
-find_ipv6_zoned("Шлюз: fe80::1%eth0")        # ['fe80::1%eth0']
+find_ipv6("Адрес: 2001:db8::1")                  # ['2001:db8::1']
+find_ipv6_zoned("Шлюз: fe80::1%eth0")            # ['fe80::1%eth0']
 find_ipv6_in_file("examples/addresses.txt")
 find_ipv6_in_url("https://example.org")
 ```
@@ -97,36 +97,32 @@ find_ipv6_in_url("https://example.org")
 | `find_ipv6_in_file(path, ...)` | поиск в текстовом файле |
 | `find_ipv6_in_url(url, ...)` | загрузка страницы и поиск адресов |
 
-## Как устроена проверка
-
-Проверка выполняется в два этапа.
-
-1. Регулярное выражение `_IPBASE` проверяет синтаксис адреса:
-   количество гексетов, допустимые шестнадцатеричные цифры, отсутствие
-   ведущих нулей, корректное расположение `::`. Оно также не позволяет
-   сокращать один нулевой гексет.
-2. Функция `_consecutive_zeros` проверяет каноничность сжатия: `::`
-   должен заменять самый длинный прогон нулей, а при равной длине —
-   первый.
-
-Для поиска шаблон дополняется границами токена, чтобы не вырезать
-адрес из более длинной строки: `2001:db8::1::2`, `2001:db8::1.5`,
-`x2001:db8::1` и `::ffff:192.168.0.1` не считаются совпадениями.
-
-Формат зоны по умолчанию — `%[A-Za-z0-9_.-]+`. Пользователь может
-передать собственное регулярное выражение через `zone_pattern`.
-
 ## Структура проекта
 
-| Файл | Назначение |
-| --- | --- |
-| `ipvalidator.py` | регулярные выражения, проверка и поиск адресов |
-| `main.py` | командная строка и интерактивный интерфейс |
-| `conftest.py` | наборы валидных и невалидных адресов для тестов |
-| `test_validator.py` | unit-тесты валидатора |
-| `examples/addresses.txt` | пример файла для поиска |
-| `requirements.txt` | зависимости проекта |
-| `pyproject.toml` | настройки pytest |
+```text
+.
+├── src/
+│   ├── ipvalidator.py      # валидатор и поиск адресов
+│   └── main.py             # командная строка и интерактивный режим
+├── tests/
+│   ├── conftest.py         # наборы тестовых адресов
+│   └── test_validator.py   # unit-тесты валидатора
+├── docs/
+│   ├── README.md           # индекс документации
+│   ├── usage.md            # командная строка и Python API
+│   └── architecture.md     # устройство валидатора и поиска
+├── examples/
+│   └── addresses.txt       # пример файла для поиска
+├── requirements.txt
+├── pyproject.toml
+└── README.md
+```
+
+## Документация
+
+* [Использование](docs/usage.md) — команды, API и коды завершения.
+* [Устройство проекта](docs/architecture.md) — регулярное выражение,
+  проверка каноничности, зоны и поиск.
 
 ## Тесты
 
@@ -134,9 +130,9 @@ find_ipv6_in_url("https://example.org")
 python3 -m pytest -q
 ```
 
-Тесты проверяют валидатор IPv6: корректные и некорректные адреса,
-каноническое сжатие `::`, идентификаторы зон, пользовательские шаблоны
-зон и обработку ошибок аргументов.
+Тесты находятся в `tests/` и проверяют валидатор IPv6: корректные и
+некорректные адреса, каноническое сжатие `::`, идентификаторы зон,
+пользовательские шаблоны зон и обработку ошибок аргументов.
 
 ## Ограничения
 

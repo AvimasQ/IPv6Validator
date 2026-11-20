@@ -1,5 +1,5 @@
 # Пример файла для поиска IPv6-адресов.
-# Запуск: python3 main.py --zoned --file examples/addresses.txt
+# Запуск: python3 src/main.py --zoned --file examples/addresses.txt
 
 Сервер: 2001:db8::1
 Шлюз: fe80::1%eth0
