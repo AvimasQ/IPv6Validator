@@ -21,42 +21,42 @@ RFC 4007, ищет адреса в тексте, файлах и на веб-с�
 * `pytest` — для запуска тестов.
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 ```
+
+Запуск выполняется из корня проекта с `PYTHONPATH=src`.
 
 ## Быстрый старт
 
 Проверка адреса:
 
 ```bash
-python3 src/main.py 2001:db8::1
+PYTHONPATH=src python3 -m main 2001:db8::1
 # Адрес '2001:db8::1' корректен.
 
-python3 src/main.py 2001:DB8::1
+PYTHONPATH=src python3 -m main 2001:DB8::1
 # Адрес '2001:DB8::1' некорректен.
 ```
 
 Проверка адреса с зоной:
 
 ```bash
-python3 src/main.py --zoned fe80::1%eth0
-python3 src/main.py --zoned --zone-pattern '%eth\d+' fe80::1%eth0
+PYTHONPATH=src python3 -m main --zoned fe80::1%eth0
+PYTHONPATH=src python3 -m main --zoned --zone-pattern '%eth\d+' fe80::1%eth0
 ```
 
 Поиск адресов:
 
 ```bash
-python3 src/main.py --text "Сервер: 2001:db8::1, шлюз: ::1"
-python3 src/main.py --zoned --file examples/addresses.txt
-python3 src/main.py --url https://example.org
+PYTHONPATH=src python3 -m main --text "Сервер: 2001:db8::1, шлюз: ::1"
+PYTHONPATH=src python3 -m main --zoned --file examples/addresses.txt
+PYTHONPATH=src python3 -m main --url https://example.org
 ```
 
 Интерактивный режим:
 
 ```bash
-python3 src/main.py
+PYTHONPATH=src python3 -m main
 ```
 
 Коды завершения:
