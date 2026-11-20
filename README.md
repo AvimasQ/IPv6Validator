@@ -108,9 +108,7 @@ find_ipv6_in_url("https://example.org")
 │   ├── conftest.py         # наборы тестовых адресов
 │   └── test_validator.py   # unit-тесты валидатора
 ├── docs/
-│   ├── README.md           # индекс документации
-│   ├── usage.md            # командная строка и Python API
-│   └── architecture.md     # устройство валидатора и поиска
+│   └── code.md             # запуск, API и устройство валидатора
 ├── examples/
 │   └── addresses.txt       # пример файла для поиска
 ├── requirements.txt
@@ -120,9 +118,8 @@ find_ipv6_in_url("https://example.org")
 
 ## Документация
 
-* [Использование](docs/usage.md) — команды, API и коды завершения.
-* [Устройство проекта](docs/architecture.md) — регулярное выражение,
-  проверка каноничности, зоны и поиск.
+* [Документация к коду](docs/code.md) — запуск, Python API и устройство
+  валидатора.
 
 ## Тесты
 
